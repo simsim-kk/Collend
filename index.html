@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Collend — 本地收藏与摘要</title>
+  <meta name="color-scheme" content="dark light" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="header-inner">
+        <div class="brand">
+          <span class="logo" aria-hidden="true">◇</span>
+          <div>
+            <h1>Collend</h1>
+            <p class="tagline">粘贴文字或链接，自动摘要与标签，全部保存在本机</p>
+          </div>
+        </div>
+        <button type="button" id="btnTheme" class="btn secondary btn-theme">浅色</button>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="panel stats-bar" aria-label="统计与排序">
+        <div class="stats-row">
+          <div class="stat">
+            <span class="stat-label">收藏总数</span>
+            <strong id="statTotal" class="stat-value">0</strong>
+          </div>
+          <div class="stat">
+            <span class="stat-label">标签总数</span>
+            <strong id="statTags" class="stat-value">0</strong>
+          </div>
+          <div class="stat stat-sort">
+            <label class="stat-label sort-label" for="sortSelect">排序</label>
+            <select id="sortSelect" class="select-glass" title="列表排序方式">
+              <option value="time-desc">时间 · 新 → 旧</option>
+              <option value="time-asc">时间 · 旧 → 新</option>
+              <option value="tags-asc">标签 · 字母顺序</option>
+            </select>
+          </div>
+        </div>
+      </section>
+      <section class="panel compose">
+        <label for="input" class="label">新内容</label>
+        <textarea
+          id="input"
+          rows="5"
+          placeholder="粘贴一段文字，或一个 https:// 链接…"
+          spellcheck="false"
+        ></textarea>
+        <div class="row">
+          <button type="button" id="btnAdd" class="btn primary">解析并保存</button>
+          <span id="status" class="status" role="status"></span>
+        </div>
+      </section>
+
+      <section class="panel search-panel">
+        <label for="search" class="label">搜索</label>
+        <div class="search-wrap">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input type="search" id="search" placeholder="标题、摘要、标签或原文…" autocomplete="off" />
+        </div>
+      </section>
+
+      <section class="list-section">
+        <div class="list-head">
+          <h2>已保存</h2>
+          <div class="list-head-actions">
+            <button type="button" id="btnClearTagFilter" class="btn secondary btn-compact hidden">清除标签筛选</button>
+            <span id="count" class="count">0 条</span>
+            <button type="button" id="btnImport" class="btn secondary">导入收藏</button>
+            <input type="file" id="importFile" class="hidden" accept="application/json,.json" />
+            <button type="button" id="btnExport" class="btn secondary">导出收藏</button>
+          </div>
+        </div>
+        <ul id="list" class="card-list"></ul>
+        <p id="empty" class="empty hidden">还没有条目。在上方粘贴内容后点击「解析并保存」。</p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>数据仅保存在当前浏览器的本地存储中，不会上传到服务器。链接解析依赖公开读取服务，部分网站可能无法抓取。</p>
+    </footer>
+  </div>
+
+  <template id="tplCard">
+    <li class="card">
+      <div class="card-top">
+        <time class="card-time"></time>
+        <div class="card-actions">
+          <button type="button" class="btn icon pin" aria-label="置顶">☆</button>
+          <button type="button" class="btn icon delete" title="删除" aria-label="删除">×</button>
+        </div>
+      </div>
+      <p class="card-source"></p>
+      <p class="card-summary"></p>
+      <div class="card-notes">
+        <span class="notes-label">备注</span>
+        <div class="notes-display" tabindex="0" role="button" aria-label="编辑备注"></div>
+        <textarea
+          class="notes-edit hidden"
+          rows="3"
+          maxlength="2000"
+          spellcheck="true"
+          placeholder="支持多行；失焦自动保存，Esc 取消未保存修改"
+          aria-label="备注内容"
+        ></textarea>
+      </div>
+      <ul class="tags"></ul>
+    </li>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
